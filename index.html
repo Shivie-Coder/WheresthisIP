@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>IP Location Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    .ip-input {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ip-input label {
+      margin-right: 10px;
+    }
+
+    .ip-input input {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      width: 200px;
+      font-size: 14px;
+      background-color: #444;
+      color: #fff;
+    }
+
+    .ip-input button {
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .location-info {
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .location-info h3 {
+      margin-bottom: 10px;
+    }
+
+    .location-info p {
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>IP Location Finder</h1>
+    <div class="ip-input">
+      <label for="ip">Enter an IP address:</label>
+      <input type="text" id="ip" placeholder="e.g., 192.168.0.1">
+      <button onclick="getLocation()">Find Location</button>
+    </div>
+    <div class="location-info">
+      <h3>Location Information:</h3>
+      <p id="result"></p>
+    </div>
+  </div>
+
+  <script>
+    function getLocation() {
+      const ipInput = document.getElementById('ip');
+      const ip = ipInput.value.trim();
+
+      if (ip === '') {
+        alert('Please enter a valid IP address.');
+        return;
+      }
+
+      fetch(`https://ipapi.co/${ip}/json/`)
+        .then(response => response.json())
+        .then(data => {
+          const resultElement = document.getElementById('result');
+          const locationInfo = `
+            <strong>IP:</strong> ${data.ip}<br>
+            <strong>Country:</strong> ${data.country_name}<br>
+            <strong>Region:</strong> ${data.region}<br>
+            <strong>City:</strong> ${data.city}<br>
+            <strong>Postal Code:</strong> ${data.postal}<br>
+            <strong>Latitude:</strong> ${data.latitude}<br>
+            <strong>Longitude:</strong> ${data.longitude}
+          `;
+          resultElement.innerHTML = locationInfo;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again.');
+        });
+    }
+  </script>
+</body>
+</html>
